@@ -1,11 +1,15 @@
+# Virtual Environments (CRITICAL - causes your 408 error)
+venv/
+.venv/
+env/
+ENV/
+
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-venv/
-env/
 *.egg-info/
 dist/
 build/
@@ -15,12 +19,13 @@ data/raw/*.csv
 data/processed/*.csv
 *.csv
 
-# Model files (too large for Git)
+# Model files
 model/indobert_fakedetector/
 *.bin
 *.pt
 *.pth
 *.h5
+*.safetensors
 
 # IDE
 .vscode/
