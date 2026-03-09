@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indonesian Fake News Detector</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Indonesian Fake News Detector</h1>
+            <p class="subtitle">Powered by IndoBERT AI Model</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <label for="newsText">Enter Indonesian news text to analyze:</label>
+                <textarea 
+                    id="newsText" 
+                    placeholder="Masukkan teks berita dalam Bahasa Indonesia di sini..."
+                    rows="8"
+                ></textarea>
+                
+                <div class="button-group">
+                    <button id="analyzeBtn" onclick="analyzeNews()">
+                        <span id="btnText">Analyze News</span>
+                        <span id="loader" class="loader hidden"></span>
+                    </button>
+                    <button id="clearBtn" onclick="clearText()">Clear</button>
+                </div>
+
+                <div class="examples">
+                    <p>Try these examples:</p>
+                    <button class="example-btn" onclick="loadExample(0)">Real News Example</button>
+                    <button class="example-btn" onclick="loadExample(1)">Fake News Example</button>
+                </div>
+            </div>
+
+            <div id="resultSection" class="result-section hidden">
+                <h2>Analysis Result</h2>
+                
+                <div id="predictionCard" class="prediction-card">
+                    <div class="prediction-label">
+                        <span id="predictionText"></span>
+                    </div>
+                    <div class="confidence">
+                        Confidence: <span id="confidenceValue"></span>
+                    </div>
+                </div>
+
+                <div class="probability-bars">
+                    <div class="prob-item">
+                        <div class="prob-label">
+                            <span>Real News</span>
+                            <span id="realProb">0%</span>
+                        </div>
+                        <div class="prob-bar">
+                            <div id="realBar" class="prob-fill real"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="prob-item">
+                        <div class="prob-label">
+                            <span>Fake News</span>
+                            <span id="fakeProb">0%</span>
+                        </div>
+                        <div class="prob-bar">
+                            <div id="fakeBar" class="prob-fill fake"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Text Length:</span>
+                        <span id="textLength">0</span> characters
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Processing Time:</span>
+                        <span id="processTime">0</span>ms
+                    </div>
+                </div>
+            </div>
+
+            <div id="errorSection" class="error-section hidden">
+                <p id="errorMessage"></p>
+            </div>
+        </main>
+
+        <footer>
+            <p>🤖 Built with IndoBERT | FastAPI Backend</p>
+            <p class="disclaimer">⚠️ This is an AI prediction tool. Always verify news from multiple sources.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
