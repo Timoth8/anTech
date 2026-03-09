@@ -57,6 +57,36 @@ main {
     padding: 40px 30px;
 }
 
+.input-mode-selector {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.mode-btn {
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid #e5e7eb;
+    border-radius: var(--border-radius);
+    background: white;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.mode-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.mode-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
 .input-section {
     margin-bottom: 30px;
 }
@@ -83,6 +113,36 @@ textarea {
 textarea:focus {
     outline: none;
     border-color: var(--primary-color);
+}
+
+.url-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e5e7eb;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+.url-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.supported-sites {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.supported-sites span {
+    background: #e5e7eb;
+    color: var(--text-color);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
 }
 
 .button-group {
@@ -275,6 +335,26 @@ button {
 .stat-label {
     font-weight: 600;
     color: #6b7280;
+}
+
+.scraped-preview {
+    margin-top: 25px;
+    padding: 20px;
+    background: #f9fafb;
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary-color);
+}
+
+.scraped-preview h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.scraped-preview p {
+    color: #4b5563;
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
 
 .error-section {
