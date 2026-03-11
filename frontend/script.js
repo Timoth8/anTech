@@ -1,11 +1,39 @@
 // Configuration
 const API_URL = 'http://localhost:8000';  // Change this to your deployed backend URL
 
+// Current mode
+let currentMode = 'text';
+
 // Example texts
 const examples = [
     "Pemerintah Indonesia mengumumkan kebijakan baru terkait pengembangan energi terbarukan. Menteri Energi dan Sumber Daya Mineral menyatakan bahwa target penggunaan energi terbarukan akan ditingkatkan menjadi 23% pada tahun 2025. Program ini mencakup pembangunan pembangkit listrik tenaga surya dan angin di berbagai daerah.",
     "HEBOH! Presiden tertangkap kamera sedang bertemu dengan alien di Istana Negara! Foto bocoran menunjukkan makhluk asing yang diduga berasal dari planet Mars. Saksi mata mengklaim telah melihat UFO mendarat di halaman istana tengah malam. Pemerintah diduga menyembunyikan fakta ini dari publik!"
 ];
+
+// Switch between text and URL mode
+function switchMode(mode) {
+    currentMode = mode;
+    
+    const textMode = document.getElementById('textMode');
+    const urlMode = document.getElementById('urlMode');
+    const textModeBtn = document.getElementById('textModeBtn');
+    const urlModeBtn = document.getElementById('urlModeBtn');
+    
+    if (mode === 'text') {
+        textMode.classList.remove('hidden');
+        urlMode.classList.add('hidden');
+        textModeBtn.classList.add('active');
+        urlModeBtn.classList.remove('active');
+    } else {
+        textMode.classList.add('hidden');
+        urlMode.classList.remove('hidden');
+        textModeBtn.classList.remove('active');
+        urlModeBtn.classList.add('active');
+    }
+    
+    hideResults();
+    hideError();
+}
 
 // Analyze news function
 async function analyzeNews() {
@@ -59,8 +87,60 @@ async function analyzeNews() {
     }
 }
 
+// Analyze news from URL
+async function analyzeNewsFromUrl() {
+    const urlInput = document.getElementById('newsUrl');
+    const url = urlInput.value.trim();
+    
+    // Validation
+    if (!url) {
+        showError('Please enter a URL');
+        return;
+    }
+    
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        showError('Please enter a valid URL starting with http:// or https://');
+        return;
+    }
+    
+    // Hide previous results/errors
+    hideResults();
+    hideError();
+    
+    // Show loading state
+    setLoadingUrl(true);
+    
+    const startTime = Date.now();
+    
+    try {
+        const response = await fetch(`${API_URL}/predict-url`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url: url })
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Prediction failed');
+        }
+        
+        const data = await response.json();
+        const processTime = Date.now() - startTime;
+        
+        displayResults(data, processTime, true);  // true indicates URL mode
+        
+    } catch (error) {
+        console.error('Error:', error);
+        showError(`Failed to analyze URL: ${error.message}. Make sure the URL contains a valid Indonesian news article and the backend is running.`);
+    } finally {
+        setLoadingUrl(false);
+    }
+}
+
 // Display results
-function displayResults(data, processTime) {
+function displayResults(data, processTime, isUrlMode = false) {
     const resultSection = document.getElementById('resultSection');
     const predictionCard = document.getElementById('predictionCard');
     const predictionText = document.getElementById('predictionText');
@@ -101,6 +181,25 @@ function displayResults(data, processTime) {
     textLength.textContent = data.text_length;
     processTimeElement.textContent = processTime;
     
+    // Show scrape method if available (URL mode)
+    const scrapeMethodStat = document.getElementById('scrapeMethodStat');
+    const scrapeMethodElement = document.getElementById('scrapeMethod');
+    const scrapedTextPreview = document.getElementById('scrapedTextPreview');
+    const scrapedTextElement = document.getElementById('scrapedText');
+    
+    if (isUrlMode && data.scrape_method) {
+        scrapeMethodStat.style.display = 'block';
+        scrapeMethodElement.textContent = data.scrape_method;
+        
+        if (data.scraped_text) {
+            scrapedTextPreview.classList.remove('hidden');
+            scrapedTextElement.textContent = data.scraped_text;
+        }
+    } else {
+        scrapeMethodStat.style.display = 'none';
+        scrapedTextPreview.classList.add('hidden');
+    }
+    
     // Show results
     resultSection.classList.remove('hidden');
     
@@ -122,6 +221,23 @@ function setLoading(isLoading) {
         analyzeBtn.disabled = false;
         btnText.classList.remove('hidden');
         loader.classList.add('hidden');
+    }
+}
+
+// Loading state for URL mode
+function setLoadingUrl(isLoading) {
+    const analyzeUrlBtn = document.getElementById('analyzeUrlBtn');
+    const btnUrlText = document.getElementById('btnUrlText');
+    const loaderUrl = document.getElementById('loaderUrl');
+    
+    if (isLoading) {
+        analyzeUrlBtn.disabled = true;
+        btnUrlText.classList.add('hidden');
+        loaderUrl.classList.remove('hidden');
+    } else {
+        analyzeUrlBtn.disabled = false;
+        btnUrlText.classList.remove('hidden');
+        loaderUrl.classList.add('hidden');
     }
 }
 
@@ -155,6 +271,13 @@ function hideResults() {
 // Clear text
 function clearText() {
     document.getElementById('newsText').value = '';
+    hideResults();
+    hideError();
+}
+
+// Clear URL
+function clearUrl() {
+    document.getElementById('newsUrl').value = '';
     hideResults();
     hideError();
 }

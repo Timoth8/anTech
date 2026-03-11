@@ -3,18 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indonesian Fake News Detector</title>
+    <title>anTech - Indonesian Fake News Detector</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🔍 Indonesian Fake News Detector</h1>
-            <p class="subtitle">Powered by IndoBERT AI Model</p>
+            <h1>anTech</h1>
+            <p class="subtitle">Indonesian Fake News Detector · Powered by IndoBERT AI</p>
         </header>
 
         <main>
-            <div class="input-section">
+            <div class="input-mode-selector">
+                <button id="textModeBtn" class="mode-btn active" onclick="switchMode('text')">
+                    📝 Paste Text
+                </button>
+                <button id="urlModeBtn" class="mode-btn" onclick="switchMode('url')">
+                    🔗 Enter URL
+                </button>
+            </div>
+
+            <div id="textMode" class="input-section">
                 <label for="newsText">Enter Indonesian news text to analyze:</label>
                 <textarea 
                     id="newsText" 
@@ -30,11 +40,41 @@
                     <button id="clearBtn" onclick="clearText()">Clear</button>
                 </div>
 
-                <div class="examples">
+                <!-- <div class="examples">
                     <p>Try these examples:</p>
                     <button class="example-btn" onclick="loadExample(0)">Real News Example</button>
                     <button class="example-btn" onclick="loadExample(1)">Fake News Example</button>
+                </div> -->
+            </div>
+
+            <div id="urlMode" class="input-section hidden">
+                <label for="newsUrl">Enter news article URL:</label>
+                <input 
+                    id="newsUrl" 
+                    type="url"
+                    placeholder="https://www.detik.com/news/artikel..."
+                    class="url-input"
+                />
+                
+                <div class="button-group">
+                    <button id="analyzeUrlBtn" onclick="analyzeNewsFromUrl()">
+                        <span id="btnUrlText">Analyze URL</span>
+                        <span id="loaderUrl" class="loader hidden"></span>
+                    </button>
+                    <button id="clearUrlBtn" onclick="clearUrl()">Clear</button>
                 </div>
+
+                <!-- <div class="examples">
+                    <p>Supported Indonesian news sites:</p>
+                    <div class="supported-sites">
+                        <span>Kompas</span>
+                        <span>Detik</span>
+                        <span>Tempo</span>
+                        <span>CNN Indonesia</span>
+                        <span>Liputan6</span>
+                        <span>and more...</span>
+                    </div>
+                </div> -->
             </div>
 
             <div id="resultSection" class="result-section hidden">
@@ -80,6 +120,15 @@
                         <span class="stat-label">Processing Time:</span>
                         <span id="processTime">0</span>ms
                     </div>
+                    <div class="stat-item" id="scrapeMethodStat" style="display: none;">
+                        <span class="stat-label">Extraction Method:</span>
+                        <span id="scrapeMethod">-</span>
+                    </div>
+                </div>
+
+                <div id="scrapedTextPreview" class="scraped-preview hidden">
+                    <h3>📄 Extracted Article Preview</h3>
+                    <p id="scrapedText"></p>
                 </div>
             </div>
 
@@ -89,7 +138,7 @@
         </main>
 
         <footer>
-            <p>🤖 Built with IndoBERT | FastAPI Backend</p>
+            <p>anTech · Built with IndoBERT | FastAPI Backend</p>
             <p class="disclaimer">⚠️ This is an AI prediction tool. Always verify news from multiple sources.</p>
         </footer>
     </div>
