@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indonesian Fake News Detector</title>
+    <title>anTech - Indonesian Fake News Detector</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🔍 Indonesian Fake News Detector</h1>
-            <p class="subtitle">Powered by IndoBERT AI Model</p>
+            <h1>anTech</h1>
+            <p class="subtitle">Indonesian Fake News Detector · Powered by IndoBERT AI</p>
         </header>
 
         <main>
@@ -39,11 +40,11 @@
                     <button id="clearBtn" onclick="clearText()">Clear</button>
                 </div>
 
-                <div class="examples">
+                <!-- <div class="examples">
                     <p>Try these examples:</p>
                     <button class="example-btn" onclick="loadExample(0)">Real News Example</button>
                     <button class="example-btn" onclick="loadExample(1)">Fake News Example</button>
-                </div>
+                </div> -->
             </div>
 
             <div id="urlMode" class="input-section hidden">
@@ -63,7 +64,7 @@
                     <button id="clearUrlBtn" onclick="clearUrl()">Clear</button>
                 </div>
 
-                <div class="examples">
+                <!-- <div class="examples">
                     <p>Supported Indonesian news sites:</p>
                     <div class="supported-sites">
                         <span>Kompas</span>
@@ -73,7 +74,7 @@
                         <span>Liputan6</span>
                         <span>and more...</span>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div id="resultSection" class="result-section hidden">
@@ -137,7 +138,7 @@
         </main>
 
         <footer>
-            <p>🤖 Built with IndoBERT | FastAPI Backend</p>
+            <p>anTech · Built with IndoBERT | FastAPI Backend</p>
             <p class="disclaimer">⚠️ This is an AI prediction tool. Always verify news from multiple sources.</p>
         </footer>
     </div>
